@@ -1,0 +1,219 @@
+body {
+     /*margin: 0;
+     padding: 0;
+     height: 100%;*/
+     background: #828282;/*#ADADAD;*//*#fff;*/
+     position: relative;
+     margin: 0;
+     padding-bottom: 6rem;
+     min-height: 100%;
+}
+.col-sm-4{
+	margin-top: 30px;
+	padding-bottom: 25%;
+	background-color: #5CCCCC;
+	border-radius: 25px;
+}
+
+.col-sm-8{
+	margin-top: 16px;
+	
+}
+
+.container{
+     margin: 100px auto;
+     box-shadow: 
+     inset 0 0 8px  rgba(0,0,0,0.1),
+           0 0 16px rgba(0,0,0,0.1); 
+     padding: 3px;
+     background-color: #313131;/*#7BBF6A*//*#5BA648;*//*#CBCB9C;*/
+}
+#containerImgs{
+	margin-top: 60px;
+}
+#ba{
+	background-color: #D0E4A8;
+}
+
+.bordered{border:1px solid #84CF7F}
+
+.well{
+     margin-bottom: 0px;
+}
+
+
+.formCreateDNS input{
+     display: inline-block; 
+     width: 20%;
+}
+
+.formCreateDNS input, div.btn-group.bootstrap-select.form-control{
+     margin-right: 10px; 
+}
+.check{
+     display: block;
+}
+
+.imgCloud{     
+     background: url("../images/cloud.png");
+     background-size: 49%;
+     background-repeat: no-repeat;
+     padding-top: 40px;
+}
+
+.imgCloudCheck{     
+     background: url("../images/cloudCheckmark.png");
+     background-size: 44%;
+     background-repeat: no-repeat;
+     padding-top: 40px;
+}
+
+
+h1 { 
+     color: #333333; 
+     font-family: 'Bitter', serif; 
+     font-size: 50px; 
+     font-weight: normal; 
+     line-height: 54px;
+     margin: 0 20px;
+     text-align: center; 
+}
+
+header, .h1, h2, .h3, .p{
+     font-family: 'Bitter', serif; 
+     color: #DBD1D1;
+}
+
+.h1 { 
+     font-size: 50px; 
+     font-weight: normal; 
+     line-height: 54px;
+     margin: 10px 20px;
+     text-align: left; 
+}
+
+h2 { 
+     margin: 10px 20px;
+}
+
+p { color: #333333; }
+
+p, .p { font-family: 'Bitter', serif; font-size: 22px; line-height: 28px; text-align: center; }
+
+footer {
+     background-color: #313131;
+     height:60px;
+     position: fixed;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     padding: 1rem;
+     text-align: center;
+}
+
+#greencore {
+     color: #237D22
+}
+
+#tableZones{
+     height: 100px !important;
+     overflow: scroll;
+}
+
+.zones {
+     width: 250%;
+}
+
+#imgGreencore {
+     width: 250px;
+}
+
+div.btn-group.bootstrap-select.form-control{
+     width: 15%;
+}
+
+.spanMX{
+     float: right;
+     border: 2px solid rgb(161, 161, 161);
+     padding: 5px;
+     border-radius: 25px;
+     font-size: 10px;
+}
+
+
+@media all and (min-width: 992px) and (max-width: 1199px) {
+     .imgCloud{   
+          background-size: 59%;
+     }
+
+     .imgCloudCheck{   
+          background-size: 54%;
+     }
+}
+
+@media all and (min-width: 768px) and (max-width: 991px) {
+     .imgCloud{   
+          background-size: 79%;
+     }
+
+     .imgCloudCheck{   
+          background-size: 74%;
+     }
+
+     div.btn-group.bootstrap-select.form-control{
+          width: 20%;
+     }
+
+     button#add, div.btn-group.bootstrap-select.form-control, .formCreateDNS input{
+          margin-top: 10px;
+     }
+
+     .formCreateDNS input{
+          width: 35%;
+     }
+}
+
+@media all and (min-width: 590px) and (max-width: 768px) {
+     .imgCloud{   
+          background-size: 89%;
+     }
+
+     .imgCloudCheck{   
+          background-size: 84%;
+     }
+
+     .tabla{
+          overflow-y:scroll;
+          overflow-x:scroll;
+     }
+
+     div.btn-group.bootstrap-select.form-control{
+          width: 25%;
+     }
+
+     button#add, div.btn-group.bootstrap-select.form-control, .formCreateDNS input{
+          margin-top: 10px;
+     }
+
+     .formCreateDNS input{
+          width: 33%;
+     }
+}
+
+@media all and (max-width: 589px) {
+     div.btn-group.bootstrap-select.form-control{
+          width: 134px;
+     }
+
+     button#add{
+          width: 101px;
+     }
+
+     .formCreateDNS input{
+          width: 177px;
+     }
+
+     button#add, div.btn-group.bootstrap-select.form-control, .formCreateDNS input{
+          margin-top: 10px;
+     }
+}

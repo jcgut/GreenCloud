@@ -1,0 +1,170 @@
+extends layout
+
+block CSS
+	link(rel='stylesheet', href='/stylesheets/bootstrap-select.min.css')
+
+block content
+	.container.col-xs-12
+		header
+			h1.h1 DNS #{zone.name}
+			h2 Manage your Domain Name System (DNS) settings.
+		div.table-container.dns-table.col-xs-12
+			div.table-top.col-xs-12
+				form
+					div.input-group
+						span.input-group-addon
+							i.fa.fa-search
+						input#searchInput.form-control(placeholder="Search DNS records" type="text" data-type="search")
+				hr
+				h3.h3 Add DNS Records
+				// p.p A, AAAA, and CNAME records can have their traffic routed through the CloudFlare system. Add more records using this form, and click the cloud next to each record to toggle CloudFlare on or off.
+				form.formCreateDNS
+					select#type.form-control.selectpicker(data-style="btn-success")
+						option(value="A") A
+						option(value="AAAA") AAAA
+						option(value="CNAME") CNAME
+						option(value="MX") MX
+					input#name.form-control(type="text", placeholder="@") 
+					input#content.form-control(type="text", placeholder="IPv4 address")
+					select#ttl.form-control.selectpicker(data-style="btn-success")
+						option(value="1") Automatic TTL
+						option(value="120") 2 minutes
+						option(value="300") 5 minutes
+						option(value="600") 10 minutes
+						option(value="900") 15 minutes
+						option(value="1800") 30 minutes
+						option(value="3600") 1 hour
+						option(value="7200") 2 hours
+						option(value="18000") 5 hours
+						option(value="43200") 12 hours
+						option(value="86400") 1 day
+					button#add.btn.btn-success(value=zone.id) Add Record
+			br
+			div.tabla.table.col-xs-12
+				table.table.table-bordered.table-striped.table-hover.table-condensed
+					thead
+						tr
+							th Type
+							th Name
+							th Value
+							th TTL
+							th Status
+							th Update
+							th Delete
+					tbody#fbody
+						each dns, i in DNSs
+							tr
+								if(dns.type == 'A')
+									td(style="font-weight: bold; border-left: 3px solid #008900; color: #008900;") #{dns.type}
+										input(value=dns.id style="display:none")
+								else
+									if(dns.type == 'AAAA')
+										td(style="font-weight: bold; border-left: 3px solid #A116D9; color: #A116D9;") #{dns.type}
+											input(value=dns.id style="display:none")
+									else
+										if(dns.type == 'CNAME')
+											td(style="font-weight: bold; border-left: 3px solid #FF7900; color: #FF7900;") #{dns.type}
+												input(value=dns.id style="display:none")
+										else
+											td(style="font-weight: bold; border-left: 3px solid #D91698; color: #D91698;") #{dns.type}
+												input(value=dns.id style="display:none")
+
+								if(dns.nameShort === "")
+									td.name() #{dns.name}
+										input(value=dns.id style="display:none")
+								else
+									td.name() #{dns.nameShort}
+										input(value=dns.id style="display:none")
+								td #{dns.content}
+									input.inputContent(value=dns.id style="display:none")
+									if(dns.type === 'MX')
+										span.spanMX(value=dns.priority) #{dns.priority}
+								- var data = JSON.stringify(dns.ttl)
+								if(data == '1')
+									td Automatic
+										input(value=dns.id style="display:none")
+								else
+									if( 119 < data && data < 1801)
+										- min = data / 60
+										td #{min} minutes
+											input(value=dns.id style="display:none")
+									else
+										if( 3599 < data && data < 43201 )
+											- hor = data / 60 / 60
+											td #{hor} hours
+												input(value=dns.id style="display:none")
+										else
+											- d = data / 60 / 60 / 24
+											td #{d} day
+												input(value=dns.id style="display:none")
+								td 
+									if(dns.type != 'MX')
+										div.check
+											if(dns.proxied == false)
+												input(type="checkbox" style="display:none" value=dns.id)
+												span
+													.imgCloud
+											else
+												input(type="checkbox" style="display:none" value=dns.id checked)
+												span
+													.imgCloudCheck
+								td
+									button.update.btn.btn-primary(value=dns.id)
+										i.fa.fa-pencil.fa-lg
+								td
+									button.delete.btn.btn-danger(value=dns.id+","+dns.name+","+dns.content)
+										i.fa.fa-trash.fa-lg
+
+	#addMX.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+					h4#myModalLabel.modal-title Add Record: MX content
+				.modal-body
+					fieldset(role='form')#login-form.well
+						.form-group
+							label(for='server') Server:
+								input#server.form-control(type= 'text', name= 'server')
+							label(for='priority') Priority:
+								input#priority.form-control(type= 'number', name= 'priority' value = 1)
+						button#formMXSave.btn.btn-success(type='button') Save
+						button#formMXCancel.btn.btn-default(type='button', data-dismiss='modal') Cancel 
+
+
+	#update.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+					h4#myModalLabel.modal-title Update Record
+				.modal-body
+					fieldset.formUpdate(role='form')#login-form.well
+						label(for='type' style="float: left; margin-right: 5px;") Type :
+							input#dnsType.form-control(type= 'text', name= 'type')
+						label(for='ttl') TTL :
+							select#dnsTTL.form-control.selectpicker(data-style="btn-success" data-width="100%")
+								option(value="1") Automatic TTL
+								option(value="120") 2 minutes
+								option(value="300") 5 minutes
+								option(value="600") 10 minutes
+								option(value="900") 15 minutes
+								option(value="1800") 30 minutes
+								option(value="3600") 1 hour
+								option(value="7200") 2 hours
+								option(value="18000") 5 hours
+								option(value="43200") 12 hours
+								option(value="86400") 1 day
+						label(for='name') Name :
+							input#dnsName.form-control(type= 'text', name= 'name')
+						label(for='content') Value :
+							input#dnsContent.form-control(type= 'text', name= 'content')
+						label#labelPriority(for='priority' style="display:none;") Priority :
+							input#dnsPriority.form-control(type= 'number', name= 'priority' style="display:none;")
+					button#UpdateDNS.btn.btn-success(type='button') Update
+					button#UpdateCancel.btn.btn-default(type='button', data-dismiss='modal') Cancel 
+
+block JS
+	script(src="/socket.io/socket.io.js")
+	script(src="/js/dnsTable.js")
+	script(src="/js/bootstrap-select.min.js")

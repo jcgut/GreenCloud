@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	.container.col-xs-12
+		header
+			h1.h1 User: #{user.username}
+			h2 Domains' list
+
+		div.table-container.dns-table.col-xs-12
+			div.input-group
+				span.input-group-addon
+					i.fa.fa-search
+				input#searchInput.form-control(placeholder="Search Domains" type="text" data-type="search")
+			br 
+			div.table
+				table.table.table-bordered.table-striped
+					thead
+						tr
+							th Name Domain
+					tbody#fbody
+						each domain, i in domains
+							tr
+								td 
+									a(href="/zone/"+domain.domain+","+domain.name) #{domain.name}
+
+block JS
+	script(src="/socket.io/socket.io.js")
+	script(src="/js/dnsTable.js")

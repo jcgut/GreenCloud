@@ -1,0 +1,30 @@
+extends layout
+
+block CSS
+  link(rel='stylesheet', href='/stylesheets/form.css')
+  link(rel="stylesheet", href="/stylesheets/animate.min.css")
+block content
+ 
+  div
+    div#logoDiv
+      img#logo(src='../images/greencore-solutions.png', href="http://www.greencore.co.cr/")
+    h1 GreenCloud
+    p Dns Manager
+    form(action='/login', method='post')
+      br
+      h2 
+        i.fa.fa-sign-in.fa-lg
+        |&nbsp; Login
+      button.submit(type="submit")
+        i.fa.fa-lock.fa-lg
+        //span.entypo-lock
+      span.entypo-user.inputUserIcon
+      input.user(type="text", name="username", placeholder="Username")
+      span.entypo-key.inputPassIcon
+      input.pass(type="password", name="password", placeholder="Password")
+      br
+    //button(onclick="notifyMe()") Notify me!
+    //button.notifications()  Notify me!
+
+block JS
+  script(src="/js/form.js")

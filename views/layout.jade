@@ -1,0 +1,123 @@
+doctype 
+html 
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+    //Style sheets used
+    link(rel='stylesheet', href='/stylesheets/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
+    link(rel='stylesheet', href='/stylesheets/greenCloud.css')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Bitter')
+    link(rel='stylesheet', href='/stylesheets/alertify.core.css')
+    link(rel='stylesheet', href='/stylesheets/alertify.default.css')
+
+    title GreenCloud
+
+    block CSS
+    
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+        //
+            El logotipo y el icono que despliega el menú se agrupan
+            para mostrarlos mejor en los dispositivos móviles
+        .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+                span.sr-only Desplegar navegación
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            img(src='../images/greenCloud.png',  href="#")
+            Greencloud
+        //
+            Agrupar los enlaces de navegación, los formularios y cualquier
+            otro elemento que se pueda ocultar al minimizar la barra
+        .collapse.navbar-collapse.navbar-ex1-collapse
+            ul.nav.navbar-nav
+                if(user)
+                    if(user.type == 'User')
+                        li.active
+                            a(href='/desk')
+                                i.fa.fa-home.fa-lg
+                                |&nbsp; Home
+                    else
+                        li.active
+                            a(href='/admin')
+                                i.fa.fa-home.fa-lg
+                                |&nbsp; Home
+                        li
+                            a(data-toggle="modal" data-target="#addUser")
+                                i.fa.fa-user-plus.fa-lg
+                                |&nbsp; Add User
+                    li
+                        a(data-toggle="modal" data-target="#changePassword")
+                            i.fa.fa-cog.fa-lg
+                            |&nbsp; Settings
+                if(zone)
+                    li.dropdown.active
+                        a.dropdown-toggle(href='#', data-toggle='dropdown')
+                            | #{zone.name}
+                            b.caret
+                        ul.dropdown-menu.zones 
+                            form.form-inline
+                                div.input-group(style="margin: 5px;")
+                                    span.input-group-addon
+                                        i.fa.fa-search
+                                    input#searchZones.form-control(placeholder="Search Domains" type="text" data-type="search")
+                            div#tableZones
+                                table.table.table-bordered.table-striped.table-fixed
+                                    thead
+                                        //
+                                            tr
+                                                td Domain
+                                    tbody#tbody
+                                        each domain, j in domains
+                                            tr
+                                                td
+                                                    a(href="/zone/"+domain.domain+","+domain.name) #{domain.name}
+                //
+                    form.navbar-form.navbar-left(role='search')
+                        .form-group
+                            input.form-control(type='text', placeholder='Buscar')
+                        button.btn.btn-success(type='submit') Enviar
+
+            ul.nav.navbar-nav.navbar-right
+                li
+                    a(href='/logout')
+                        i.fa.fa-sign-out.fa-lg
+                        |&nbsp; Log Out  
+    if(user)
+        #changePassword.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+                        h4#myModalLabel.modal-title Update information
+                    .modal-body
+                        form.formPassword(role='form', method="post", action="/changePassword/"+user._id)#login-form.well
+                            .form-group
+                                h3 Basic Information
+                                label(for='username') Username:
+                                    input#username.form-control(type= 'text', name= 'username', value=user.username)
+                                label(for='password') Password:
+                                    input#password.form-control(type= 'text', name= 'password')
+                            button.btn.btn-success(type='submit') Update
+                            button.btn.btn-default(type='button', data-dismiss='modal') Cancel 
+
+    block content
+    
+  footer
+    if(user)
+        p.text-muted 
+            img#imgGreencore(src='../images/greencore-solutions.png', href="http://www.greencore.co.cr/")
+    else
+        p.text-muted 
+            a#greencore(href="http://www.greencore.co.cr/") Greencore Solutions
+
+    script(src="/js/jquery-2.0.3.min.js")
+    script(src="/js/bootstrap.min.js")
+    script(src="/js/alertify.min.js")
+    script(src="/js/notify.min.js")
+    script(src="/js/notify-bootstrap.js")
+    block JS

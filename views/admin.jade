@@ -1,0 +1,82 @@
+extends layout
+
+block CSS
+	link(rel='stylesheet', href='/stylesheets/bootstrap-select.min.css')
+
+block content
+	.container.col-xs-12
+		header
+			h1.h1 User: #{user.username}
+		div.table-container.dns-table.col-xs-12
+			h2 Users' Lists
+			div.table
+				table.table.table-bordered.table-striped( data-filter="true" data-input="#search")
+					thead
+						tr
+							th Username
+							th Domains
+							th Edit
+							th Delete
+					tbody
+						each user, i in users
+							tr
+								td #{user.username}
+								td
+									ul
+									each domain in user.domains
+										li #{domain.name}
+								td
+									button.btn.btn-primary(data-toggle="modal" data-target="#editUser" value=user._id)
+										i.fa.fa-pencil.fa-lg
+								td
+									button.deleteUser.btn.btn-danger(value=user._id+","+user.username)
+										i.fa.fa-trash.fa-lg
+
+	#addUser.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+					h4#myModalLabel.modal-title Add User
+				.modal-body
+					form(role='form', method="post", action="/addUser")#login-form.well
+						.form-group
+							h3 Basic Information
+							label(for='username') Username:
+								input#username.form-control(type= 'text', placeholder='Otro', name= 'username')
+							label(for='password') Password:
+								input#password.form-control(type= 'text', placeholder='Otro', name= 'password')
+						.form-group
+							h3 Domain Information
+							label(for='domains') Domains:
+								select.form-control#selectDomains.selectpicker(data-style="btn-success", data-width="200px", type="text", name="domains", multiple="multiple" data-selected-text-format="count>2") 
+									each domain, i in domains
+										option(value= domain.id + "," + domain.name) #{domain.name} 
+						button.btn.btn-success(type='submit') Create
+						button.btn.btn-default(type='button', data-dismiss='modal') Cancel 
+
+	#editUser.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					button.close(data-dismiss='modal') ×
+					h3 Edit user's information
+				.modal-body
+					//#modalContent(style='display:none;')
+					form.formUpdate(role='form', method="post", action="/updateUser")#login-form.well
+						.form-group
+							h3 Basic Information
+							label(for='username') Username:
+								input#usernameUpdate.form-control(type= 'text', placeholder='Otro', name= 'username')
+						.form-group
+							h3 Domain Information
+							label(for='domains') Domains:
+								select.form-control#selectDomainsUpdate.selectpicker(data-style="btn-success", data-width="200px", type="text", name="domains", multiple="multiple" data-selected-text-format="count>2") 
+									each domain, i in domains
+										option(value= domain.id + "," + domain.name) #{domain.name} 
+						button#buttonUpdate.btn.btn-success(type='submit') Update
+						button.btn.btn-default(type='button', data-dismiss='modal') Cancel 
+
+block JS
+	script(src="/js/bootstrap-select.min.js")
+	script(src="/js/editUser.js")
